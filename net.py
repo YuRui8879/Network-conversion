@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import re
 import requests
 import json
+from win10toast import ToastNotifier
 
 def check_stage(net_type = 4):
     if net_type == 4:
@@ -114,21 +115,38 @@ def load_json(path):
     return ids,password
 
 def connect_v4():
+    toaster = ToastNotifier()
     ids,password = load_json(r'.\config.json')
     if check_stage(net_type = 6) == 1:
         deconnect(net_type = 6)
     flag = post_v4(ids,password)
     if flag == 1:
-        print('连接ipv4成功')
+        toaster.show_toast(u'Net',u'连接ipv4成功',threaded=True)
     else:
-        print('连接ipv4失败')
+        toaster.show_toast(u'Net',u'连接ipv4失败',threaded=True)
 
 def connect_v6():
+    toaster = ToastNotifier()
     ids,password = load_json(r'.\config.json')
     if check_stage(net_type = 4) == 1:
         deconnect(net_type = 4)
     flag = post_v6(ids,password)
     if flag == 1:
-        print('连接ipv6成功')
+        toaster.show_toast(u'Net',u'连接ipv6成功',threaded=True)
     else:
-        print('连接ipv6失败')
+        toaster.show_toast(u'Net',u'连接ipv6失败',threaded=True)
+
+def deconnect_v4_v6():
+    toaster = ToastNotifier()
+    if check_stage(4):
+        v4_state = deconnect(4)
+        if v4_state:
+            toaster.show_toast(u'Net',u'已断开ipv4连接',threaded=True)
+        else:
+            toaster.show_toast(u'Net',u'断开ipv4连接失败',threaded=True)
+    if check_stage(6):
+        v6_state = deconnect(6)
+        if v6_state:
+            toaster.show_toast(u'Net',u'已断开ipv6连接',threaded=True)
+        else:
+            toaster.show_toast(u'Net',u'断开ipv6连接失败',threaded=True)

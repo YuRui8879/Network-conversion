@@ -3,7 +3,7 @@ import sys
 import win32api
 import win32con
 import win32gui_struct
-from net import connect_v4,connect_v6
+from net import connect_v4,connect_v6,deconnect_v4_v6
 
 
 try:
@@ -219,7 +219,8 @@ if __name__ == '__main__':
     icons = 'net.ico'
     hover_text = "网络切换小助手"
     menu_options = (('连接v4', icons, connect_v4),
-                    ('连接v6', icons, connect_v6))
+                    ('连接v6', icons, connect_v6),
+                    ('断开连接',icons, deconnect_v4_v6))
     def bye(sysTrayIcon): print('退出')
     
     SysTrayIcon(icons, hover_text, menu_options, on_quit=bye)
